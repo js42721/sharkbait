@@ -1,0 +1,2 @@
+include 'android', 'core', 'desktop', 'ios', ':datastructures'
+project(':datastructures').projectDir = new File(settingsDir, '../datastructures')

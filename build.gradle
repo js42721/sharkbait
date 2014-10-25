@@ -60,10 +60,6 @@ project(":core") {
     }
 }
 
-project(":datastructures") {
-    apply plugin: "java"
-}
-
 project(":desktop") {
     apply plugin: "java"
 

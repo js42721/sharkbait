@@ -6,10 +6,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.sharkbait.entities.Rock;
+import com.mygdx.sharkbait.entities.TileSprite;
+import com.mygdx.sharkbait.entities.Water;
+import com.mygdx.sharkbait.powerups.Powerup;
+import com.mygdx.sharkbait.world.World;
 
-/**
- * Draws the game world.
- */
+/** Draws the game world. */
 public class WorldRenderer {
     private final SpriteBatch batch;
     private final World world;
@@ -17,10 +20,10 @@ public class WorldRenderer {
     private final Comparator<TileSprite> zIndexCmp;
 
     /**
-     * Constructor.
+     * Constructs a renderer.
      * 
      * @param batch the sprite batcher
-     * @param world the game world that is to be rendered
+     * @param world the world to render
      */
     public WorldRenderer(SpriteBatch batch, World world) {
         this.batch = batch;
@@ -33,9 +36,7 @@ public class WorldRenderer {
         zIndexSort();
     }
 
-    /**
-     * Draws the game world.
-     */
+    /** Draws sprites. */
     public void render() {
         /* More accurate but causes distortion. */
         //float tileWidth = (float)SharkBait.WIDTH / world.getDimension();
@@ -55,9 +56,7 @@ public class WorldRenderer {
         }
     }
 
-    /**
-     * Gathers world sprites. Used when sprites are added or removed.
-     */
+    /** Gathers world sprites. Used when sprites are added or removed. */
     public void refreshSprites() {
         zOrderedSprites.clear();
 
@@ -73,9 +72,7 @@ public class WorldRenderer {
         }
     }
 
-    /**
-     * Sorts all the sprites whose draw order depends on z-index.
-     */
+    /** Sorts all the sprites whose draw order depends on z-index. */
     public void zIndexSort() {
         Collections.sort(zOrderedSprites, zIndexCmp);
     }

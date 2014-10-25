@@ -5,26 +5,22 @@ import java.io.Serializable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.mygdx.sharkbait.utils.Serialization;
+import com.mygdx.sharkbait.world.World;
 
-/**
- * Stores game state.
- */
+/** Stores game state. */
 public class SaveState {
     private final Preferences preferences;
     private GameState gameState;
 
-    /**
-     * Creates a save state from a save file. 
-     * 
-     * @param filename the save file
-     */
+    /** Creates a save state from the specified file. */
     public SaveState(String filename) {
         preferences = Gdx.app.getPreferences(filename);
         gameState = new GameState();
     }
     
     /**
-     * Loads game data from the save file.
+     * Tries to load game data from the save file.
      * 
      * @return {@code true} if the data was loaded
      */
@@ -41,9 +37,7 @@ public class SaveState {
         return true;
     }
 
-    /**
-     * Saves data to the save file.
-     */
+    /** Saves data to the save file. */
     public void save() {
         try {
             preferences.putString("gameState", Serialization.toString(gameState));
@@ -53,16 +47,12 @@ public class SaveState {
         preferences.flush();
     }
 
-    /**
-     * Clears all loaded data.
-     */
+    /** Clears all loaded data. */
     public void clear() {
         gameState = new GameState();
     }
     
-    /**
-     * Erases the save file.
-     */
+    /** Erases the save file. */
     public void erase() {
         preferences.clear();
         preferences.flush();

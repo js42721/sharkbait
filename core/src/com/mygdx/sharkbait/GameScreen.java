@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,8 +14,22 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.mygdx.sharkbait.entities.Player;
+import com.mygdx.sharkbait.entities.Shark;
+import com.mygdx.sharkbait.moves.AStarMove;
+import com.mygdx.sharkbait.moves.Mover;
+import com.mygdx.sharkbait.moves.SimpleMove;
+import com.mygdx.sharkbait.powerups.Caffeine;
+import com.mygdx.sharkbait.powerups.Life;
+import com.mygdx.sharkbait.powerups.Powerup;
+import com.mygdx.sharkbait.powerups.Slow;
+import com.mygdx.sharkbait.utils.Assets;
+import com.mygdx.sharkbait.utils.Board;
+import com.mygdx.sharkbait.utils.Position;
+import com.mygdx.sharkbait.world.World;
+import com.mygdx.sharkbait.world.WorldListener;
 
-public class GameScreen implements Screen {	
+public class GameScreen extends ScreenAdapter implements Screen {	
     public static final int RUNNING = 0;
     public static final int PAUSED = 1;
     public static final int LEVEL_END = 2;
@@ -30,18 +45,13 @@ public class GameScreen implements Screen {
     private static final int START_SURFACED_P = 50;
     private static final int SURFACE_P = 50;
     private static final int SUBMERGE_P = 50;
-    private static final float ROCK_CHANGE_T = 2;
-    private static final float SHARK_MOVE_T = 1;
+    private static final float ROCK_CHANGE_T = 2.0f;
+    private static final float SHARK_MOVE_T = 1.0f;
     
-    /* 
-     * Game parameter bounds. These take precedence over the base values. This
-     * means that the base values cannot cause the effective values to exceed
-     * these limits.
-     */
     private static final int START_SURFACED_P_MIN = 20;
     private static final int SURFACE_P_MIN = 25;
     private static final int SUBMERGE_P_MAX = 75;
-    private static final float ROCK_CHANGE_T_MAX = 4;
+    private static final float ROCK_CHANGE_T_MAX = 4.0f;
     private static final float SHARK_MOVE_T_MAX = 0.5f;
 
     private final SharkBait game;
@@ -126,21 +136,6 @@ public class GameScreen implements Screen {
         }
     }
 
-    @Override
-    public void resume() {}
-
-    @Override
-    public void dispose() {}
-
-    @Override
-    public void resize(int width, int height) {}
-
-    @Override
-    public void show() {}
-
-    @Override
-    public void hide() {}
-
     private void update(float delta) {		
         switch (state) {
         case RUNNING:
@@ -162,7 +157,7 @@ public class GameScreen implements Screen {
             /* Controls the player. */
             if (world.getPlayer().getState() == Player.IDLE) {
                 float tileWidth = (float)SharkBait.WIDTH / DIMENSION;
-                float offsetY = (float)(SharkBait.HEIGHT - SharkBait.WIDTH) / 2;
+                float offsetY = (SharkBait.HEIGHT - SharkBait.WIDTH) / 2.0f;
                 int x = (int)(touch.x / tileWidth);
                 int y = (int)((SharkBait.HEIGHT - touch.y - offsetY) / tileWidth);
                 playerMove(new Position(x, y));
@@ -310,7 +305,7 @@ public class GameScreen implements Screen {
         drawMessage("YOU BECAME SHARK FOOD...");
     }
 
-    /* Draws a message in the center of the map area. */
+    /** Displays the specified message at the center of the map area. */
     private void drawMessage(String msg) {
         TextBounds bounds = game.font.getBounds(msg);
         float x = (float)SharkBait.WIDTH / 2 - bounds.width / 2;
@@ -320,7 +315,7 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, msg, x, y);
     }
 
-    /* Draws the lower panel. */
+    /** Draws the lower panel. */
     private void drawPanel() {
         float centerX = (float)SharkBait.WIDTH / 2;
 
@@ -339,7 +334,7 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, livesDisplay, livesDisplayX, livesDisplayY);
     }
 
-    /* Creates the next level. */
+    /** Creates the next level. */
     private void constructLevel() {
         resetTimers();
         adjustDifficulty();
@@ -364,7 +359,7 @@ public class GameScreen implements Screen {
         worldRenderer = new WorldRenderer(game.batch, world);
     }
 
-    /*
+    /**
      * Resets in-game timers. 
      * Should be called at the start of level construction.
      */
@@ -373,7 +368,7 @@ public class GameScreen implements Screen {
         generateMoveTick = 0;
     }
 
-    /* 
+    /**
      * Sets the difficulty of the game by adjusting some parameters.
      * Should be called at the start of level construction.
      */ 
@@ -386,14 +381,12 @@ public class GameScreen implements Screen {
         sharkMoveDelay = Math.max(SHARK_MOVE_T_MAX, SHARK_MOVE_T - difficulty * 0.025f);
     }
 
-    /*
-     * Returns a move generator for the shark. 
-     */
+    /** Returns a move generator for the shark. */
     private Mover constructMover(World world, int level) {
         return level < 10 ? new SimpleMove(world) : new AStarMove(world);
     }
 
-    /* Saves game state to the save file. */
+    /** Saves game state to the save file. */
     private void save() {
         save.setWorld(world);
         save.setState(state);
@@ -404,7 +397,7 @@ public class GameScreen implements Screen {
         save.save();
     }
 
-    /* Reconstructs game from saved data. */
+    /** Reconstructs game from saved data. */
     private void load() {
         world = save.getWorld();
         state = save.getState();

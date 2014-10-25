@@ -3,6 +3,7 @@ package com.mygdx.sharkbait;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.sharkbait.utils.Assets;
 
 public class SharkBait extends Game {
     public static final int WIDTH = 320;

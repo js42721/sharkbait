@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.mygdx.sharkbait.utils.Assets;
 
 public class MainMenuScreen implements Screen {    
     private interface ButtonListener {
@@ -41,7 +42,7 @@ public class MainMenuScreen implements Screen {
             }
         };
 
-        public final String text;
+        final String text;
 
         Buttons(String text) {
             this.text = text;
@@ -110,7 +111,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void resume() {}
 
-    /* 
+    /**
      * Loads a saved game or, if save is null, starts a new one. Loading from
      * a bad save can cause a crash to occur so make sure the load method for
      * the save returns true.
@@ -120,7 +121,7 @@ public class MainMenuScreen implements Screen {
         game.setScreen(new GameScreen(game, saveState));
     }
 
-    /* 
+    /**
      * Creates the menu. The "continue" option will appear only if the save
      * file is successfully loaded.
      */

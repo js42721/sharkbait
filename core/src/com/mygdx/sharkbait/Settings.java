@@ -5,19 +5,16 @@ import java.io.Serializable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.mygdx.sharkbait.utils.Serialization;
 
-/**
- * Stores settings.
- */
+/** Stores settings. */
 public final class Settings {
     private static Configuration config = new Configuration();
     private static final Preferences preferences = Gdx.app.getPreferences(SharkBait.SETTINGS);
 
     private Settings() {}
     
-    /**
-     * Loads settings from the settings file.
-     */
+    /** Loads settings from the settings file. */
     public static void load() {
         /* Prepares default values in case of failure. */
         config = new Configuration();
@@ -30,9 +27,7 @@ public final class Settings {
         } catch (Exception e) {}
     }
 
-    /**
-     * Saves settings to the settings file.
-     */
+    /** Saves settings to the settings file. */
     public static void save() {
         try {
             preferences.putString("config", Serialization.toString(config));

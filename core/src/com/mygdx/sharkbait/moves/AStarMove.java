@@ -9,7 +9,7 @@ import com.mygdx.sharkbait.utils.Board;
 import com.mygdx.sharkbait.utils.Position;
 import com.mygdx.sharkbait.world.World;
 
-import datastructures.DHeapPriorityMap;
+import datastructures.PriorityMap;
 
 /** Generates moves for the shark using the A* algorithm. */
 public class AStarMove implements Mover {
@@ -39,8 +39,7 @@ public class AStarMove implements Mover {
      * the destination.
      */
     private void computePath(Position src, Position dst) {
-        /* Configured as a min-heap by default, which is what we want. */
-        DHeapPriorityMap<Position, AStarNode> open = new DHeapPriorityMap<Position, AStarNode>();
+        PriorityMap<Position, AStarNode> open = new PriorityMap<Position, AStarNode>();
         Set<Position> closed = new HashSet<Position>();
 
         AStarNode start = new AStarNode(src, null, 0, 0, Board.distanceL1(src, dst));

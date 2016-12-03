@@ -26,7 +26,7 @@ public class PowerupFactory {
      * @throws NullPointerException if the powerup is null
      * @throws IllegalArgumentException if the specified weight is negative
      */
-    public void register(Powerup p, long weight) {
+    public void register(Powerup p, int weight) {
         if (p == null) {
             throw new NullPointerException();
         }
